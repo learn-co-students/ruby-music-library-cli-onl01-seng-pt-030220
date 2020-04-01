@@ -3,6 +3,8 @@ require_relative "./Concerns/Findable.rb"
 
 class Song 
 
+  extend Concerns::Findable
+
   attr_accessor :name
   attr_reader :artist, :genre
 
@@ -41,15 +43,6 @@ class Song
     new_song = Song.new(song_name)
     @@all << new_song
     return new_song 
-  end 
-
-  def self.find_by_name(name)
-    all.find { |song| song.name == name }
-  end
-
-  def self.find_or_create_by_name(name)
-    song = find_by_name(name)
-    return song ? song : self.create(name)
   end 
 
   def self.new_from_filename(filename)
