@@ -1,9 +1,12 @@
 class Artist
+  
   extend Concerns::Findable
   extend Persistable::ClassMethod
+  extend Nameable::ClassMethod
   include Persistable::InstanceMethod
 
-  attr_accessor :name, :songs 
+  attr_accessor :name
+  attr_reader :songs 
 
   @@all = [ ]
 
@@ -17,11 +20,8 @@ class Artist
   end 
 
   def add_song(song)
-      songs << song unless songs.include?(song)
-    if song.artist == nil 
-       song.artist = self 
-    end 
-    return song.artist
+    songs << song unless songs.include?(song)
+    return song.artist = self if song.artist == nil 
   end
 
   def genres

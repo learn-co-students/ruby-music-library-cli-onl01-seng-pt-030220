@@ -4,6 +4,7 @@ class Song
 
   extend Concerns::Findable
   extend Persistable::ClassMethod
+  extend Nameable::ClassMethod
   include Persistable::InstanceMethod
 
   attr_accessor :name
@@ -23,7 +24,8 @@ class Song
   end 
 
   def genre=(genre)
-    @genre = genre.songs << self unless genre.songs.include?(self)
+    @genre = genre
+    genre.songs << self unless genre.songs.include?(self)
   end
 
   def self.all

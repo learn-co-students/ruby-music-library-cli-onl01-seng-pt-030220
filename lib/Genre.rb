@@ -1,9 +1,11 @@
 class Genre
   extend Concerns::Findable
   extend Persistable::ClassMethod
+  extend Nameable::ClassMethod
   include Persistable::InstanceMethod
 
-  attr_accessor :name, :songs 
+  attr_accessor :name
+  attr_reader :songs 
 
   @@all = [ ]
 
