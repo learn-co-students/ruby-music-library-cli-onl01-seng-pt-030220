@@ -1,8 +1,7 @@
-require_relative "./Concerns/Findable.rb"
-
-
 class Artist
   extend Concerns::Findable
+  extend Persistable::ClassMethod
+  include Persistable::InstanceMethod
 
   attr_accessor :name, :songs 
 
@@ -17,20 +16,6 @@ class Artist
     @@all
   end 
 
-  def self.destroy_all
-    @@all.clear
-  end 
-
-  def self.create(artist_name)
-    new_artist = Artist.new(artist_name)
-    new_artist.save
-    return new_artist
-  end 
-
-  def save
-    @@all << self
-  end 
-
   def add_song(song)
       songs << song unless songs.include?(song)
     if song.artist == nil 
@@ -42,7 +27,4 @@ class Artist
   def genres
     songs.map { |song| song.genre }.uniq
   end
-
-
-
 end 

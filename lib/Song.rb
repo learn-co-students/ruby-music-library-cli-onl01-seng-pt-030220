@@ -1,9 +1,10 @@
 require_relative "./Concerns/Findable.rb"
 
-
 class Song 
 
   extend Concerns::Findable
+  extend Persistable::ClassMethod
+  include Persistable::InstanceMethod
 
   attr_accessor :name
   attr_reader :artist, :genre
@@ -14,11 +15,6 @@ class Song
     @name = name 
     self.artist=(artist) if artist
     self.genre=(genre) if genre
-    
-  end
-
-  def save
-    @@all << self
   end 
 
   def artist=(artist)
@@ -35,16 +31,6 @@ class Song
     @@all
   end 
 
-  def self.destroy_all
-    @@all.clear
-  end 
-
-  def self.create(song_name)
-    new_song = Song.new(song_name)
-    @@all << new_song
-    return new_song 
-  end 
-
   def self.new_from_filename(filename)
     file_parts = filename.split(" - ")
     song_artist = file_parts[0] 
@@ -58,6 +44,5 @@ class Song
 
   def self.create_from_filename(filename)
     new_from_filename(filename).save
-    
   end
 end 
