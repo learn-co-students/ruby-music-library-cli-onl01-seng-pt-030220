@@ -1,5 +1,5 @@
 require 'pry'
-
+#comment change
 class Artist
 
     extend Concerns::Findable
