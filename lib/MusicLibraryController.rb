@@ -66,34 +66,36 @@ class MusicLibraryController
 
     def list_songs_by_artist
         puts "Please enter the name of an artist:"
-        user_input = gets.strip
-        current_artist = Artist.all.find {|artist| artist.name == user_input}
-        Song.all.select{|song| song.artist == current_artist}.sort_by{|song| song.name}.each.with_index(1) do |song, index|
-            puts "#{index}. #{song.name} - #{song.genre.name}"
+        input = gets.strip
+    
+        if artist = Artist.find_by_name(input)
+          artist.songs.sort{ |a, b| a.name <=> b.name }.each.with_index(1) do |s, i|
+            puts "#{i}. #{s.name} - #{s.genre.name}"
+          end
         end
     end
 
     def list_songs_by_genre
         puts "Please enter the name of a genre:"
-        user_input = gets.strip
-        current_genre = Genre.all.find {|genre| genre.name == user_input}
-        Song.all.select{|song| song.genre == current_genre}.sort_by{|song| song.name}.each.with_index(1) do |song, index|
-            puts "#{index}. #{song.artist.name} - #{song.name}"
+        input = gets.strip
+    
+        if genre = Genre.find_by_name(input)
+          genre.songs.sort{ |a, b| a.name <=> b.name }.each.with_index(1) do |s, i|
+            puts "#{i}. #{s.artist.name} - #{s.name}"
+          end
         end
     end
-
+    
     def play_song
-        arr=[]
-        Song.all.sort { |a,b| a.name <=> b.name }.uniq.each do |music|
-           arr  <<  "Playing #{music.name} by #{music.artist.name}"
+        puts "Which song number would you like to play?"
+    
+        input = gets.strip.to_i
+        if (1..Song.all.length).include?(input)
+          song = Song.all.sort{ |a, b| a.name <=> b.name }[input - 1]
         end
-        puts("Which song number would you like to play?")
-        user_input = gets.strip.to_i
-    #    user_input.between?(0, arr.length+1)
-            if user_input > 0 && user_input <= arr.length
-               puts arr[user_input-1]
-            end
-    end
+    
+        puts "Playing #{song.name} by #{song.artist.name}" if song
+      end
 end
 
 
