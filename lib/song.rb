@@ -45,9 +45,6 @@ class Song
         @genre
     end
 
-    def genres
-    end
-
     def self.find_by_name(song)
         @@all.detect do |songs|
             songs.name == song
@@ -66,12 +63,24 @@ class Song
         my_song = array_filename[1]
         my_artist = array_filename[0]
         my_genre = array_filename[2].gsub(".mp3",'')
-        binding.pry
-        new_artist_from_filename = Artist.new(my_artist) if Artist.find_by_name(my_artist) == nil
-        new_song_from_filename = Song.new(my_song,my_artist,my_genre) if find_by_name(my_song) == nil
+        #binding.pry
+        new_artist_from_filename = Artist.find_or_create_by_name(my_artist)
+        new_genre_from_filename = Genre.find_or_create_by_name(my_genre)
+        new_song_from_filename = Song.new(my_song,new_artist_from_filename,new_genre_from_filename) if find_by_name(my_song) == nil
     end
 
-    def self.create_from_filename
-        #but also saves the newly-created song to the @@all class variable
+    def self.create_from_filename(filename)
+        #new_from_filename(filename).save
+        new_from_filename(filename).tap {|item| item.save}
+        
+        
+        #binding.pry
+        #created_song.genre = filename.split(" - ")[2].gsub(".mp3",'')
+      
     end
+
+    def to_s
+        self.name
+    end
+
 end
