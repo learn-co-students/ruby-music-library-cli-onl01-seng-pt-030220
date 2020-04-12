@@ -1,8 +1,8 @@
 class MusicLibraryController
-    attr_accessor :path
+    # attr_accessor :path
 
     def initialize(path= "./db/mp3s")
-        @path = path
+        # @path = path
         MusicImporter.new(path).import
     end
 
@@ -41,7 +41,7 @@ class MusicLibraryController
     end
 
     def list_songs
-        Song.all.sort{|a, b| a.name <=> b.name}.uniq.each.with_index do |song, ind|
+        Song.all.sort{|a, b| a.name <=> b.name}.uniq.each_with_index do |song, ind|
             puts "#{ind+1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
         end
     end
@@ -80,8 +80,14 @@ class MusicLibraryController
         end
     end
 
-    def play_song(user_input = gets.chomp)
+    def play_song
         puts "Which song number would you like to play?"
-       input = gets.strip
+        input = gets.strip.to_i
+        
+        if input > 0 && input <= Song.all.length
+            array = Song.all.sort{|a, b| a.name <=> b.name}
+            song = array[input-1]
+            puts "Playing #{song.name} by #{song.artist.name}"
+        end
     end
 end

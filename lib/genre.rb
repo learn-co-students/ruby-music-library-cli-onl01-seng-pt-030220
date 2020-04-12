@@ -14,13 +14,13 @@ class Genre
     end
 
     def self.create(name)
-        self.new(name)
+        self.new(name).save
+        @@all.last
     end
 
     def initialize(name)
         @name = name
         @songs = []
-        save
     end
     
     def save
@@ -30,5 +30,4 @@ class Genre
     def artists
         songs.map {|song| song.artist}.uniq
     end
-
 end
