@@ -1,4 +1,4 @@
-require 'pry'
+#require 'pry'
 
 class Song
 
@@ -49,6 +49,21 @@ class Song
 
   def self.find_or_create_by_name(name)
     find_by_name(name) || create(name)
+  end
+
+  def self.new_from_filename(filename)
+    filename = filename.split(" - ")
+    artist = filename[0]
+    song = filename[1]
+    genre = filename[2].gsub( ".mp3" , "")
+
+    artist = Artist.find_or_create_by_name(artist)
+    genre = Genre.find_or_create_by_name(genre)
+    song = Song.new(song, artist, genre)
+  end
+
+  def self.create_from_filename(filename)
+    @@all << Song.new_from_filename(filename)
   end
 #binding.pry
 end
