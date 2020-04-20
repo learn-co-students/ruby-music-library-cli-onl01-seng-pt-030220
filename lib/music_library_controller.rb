@@ -6,6 +6,7 @@ class MusicLibraryController
   end
 
   def call
+
     user_input = ""
 
     while user_input != 'exit'
@@ -40,5 +41,58 @@ class MusicLibraryController
       end
     end
   end
+
+  def list_songs
+    song_list = Song.all.sort_by {|song| song.name}.uniq
+    song_list.each_with_index do |song, i|
+      puts "#{i + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"
+    end
+  end
+
+  def list_artists
+    artist_list = Artist.all.sort_by {|artist| artist.name}.uniq
+    artist_list.each_with_index do |artist, i|
+      puts "#{i + 1}. #{artist.name}"
+    end
+  end
+
+  def list_genres
+    genre_list = Genre.all.sort_by {|genre| genre.name}.uniq
+    genre_list.each_with_index do |genre, i|
+      puts "#{i + 1}. #{genre.name}"
+    end
+  end
+
+  def list_songs_by_artist
+     puts "Please enter the name of an artist:"
+     user_input_artist = gets.strip
+
+     if artist = Artist.find_by_name(user_input_artist)
+       artist.songs.sort { |a,b| a.name <=> b.name }.each.with_index(1) do |song, i|
+         puts "#{i}. #{song.name} - #{song.genre.name}"
+       end
+     end
+   end
+
+   def list_songs_by_genre
+     puts "Please enter the name of a genre:"
+     user_input_genre = gets.strip
+
+     if genre = Genre.find_by_name(user_input_genre)
+       genre.songs.sort { |a,b| a.name <=> b.name }.each.with_index(1) do |song, i|
+         puts "#{i}. #{song.artist.name} - #{song.name}"
+       end
+     end
+   end
+
+   def play_song
+     puts "Which song number would you like to play?"
+     user_song_number = gets.to_i
+     song_list = Song.all.sort_by {|song| song.name}.uniq
+     if (1..song_list.length).include?(user_song_number)
+       song = song_list[user_song_number - 1]
+       puts "Playing #{song.name} by #{song.artist.name}"
+     end
+   end
 
 end
