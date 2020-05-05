@@ -51,8 +51,10 @@ class Song
   end
 
   def self.new_from_filename(filename)
+    filename = filename.gsub(".mp3", "")
     file_array = filename.split(" - ")
     name, artist, genre = file_array[1], file_array[0], file_array[2]
+    # equal to artist, name, genre = filename.split(" - ")
 
     artist = Artist.find_or_create_by_name(artist)
     genre = Genre.find_or_create_by_name(genre)
@@ -63,6 +65,7 @@ class Song
 
   def self.create_from_filename(filename)
     new_from_filename(filename).tap {|song| song.save}
+    # equal to new_from_filename(filename).save
   end
 
 end
